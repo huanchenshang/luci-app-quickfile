@@ -34,7 +34,11 @@ endef
 
 define Package/quickfile/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/quickfile-$(ARCH_PACKAGES) $(1)/usr/bin/quickfile
+	if [ "$(ARCH_PACKAGES)" = "x86_64" ]; then \
+		$(INSTALL_BIN) $(PKG_BUILD_DIR)/quickfile-x86_64 $(1)/usr/bin/quickfile; \
+	else \
+		$(INSTALL_BIN) $(PKG_BUILD_DIR)/quickfile-aarch64_generic $(1)/usr/bin/quickfile; \
+	fi
 	$(INSTALL_DIR) $(1)/etc/init.d $(1)/etc/nginx/conf.d
 	$(INSTALL_BIN) $(CURDIR)/files/quickfile.init $(1)/etc/init.d/quickfile
 	$(INSTALL_CONF) $(CURDIR)/files/quickfile.locations $(1)/etc/nginx/conf.d/quickfile.locations
